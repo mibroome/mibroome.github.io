@@ -1,3 +1,3 @@
-# sgmastro.github.io
+# mibroome.github.io
 
-Here is the code for my website.
+Adapted from Sam Moore at sgmastro.github.io.
