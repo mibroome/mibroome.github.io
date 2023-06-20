@@ -8,10 +8,10 @@ p {
 }
 
 a {
-  color: #a1e5ab;
+  color: #5F9EA0;
 }
 a.active, a:active, a:focus, a:hover {
-  color: #79da87;
+  color: #4c7e80;
 }
 
 h1,
@@ -48,12 +48,12 @@ section h3.section-subheading {
   }
 }
 ::-moz-selection {
-  background: #a1e5ab;
+  background: #5F9EA0;
   text-shadow: none;
 }
 
 ::selection {
-  background: #a1e5ab;
+  background: #5F9EA0;
   text-shadow: none;
 }
 
@@ -66,7 +66,7 @@ img::-moz-selection {
 }
 
 body {
-  -webkit-tap-highlight-color: #a1e5ab;
+  -webkit-tap-highlight-color: #5F9EA0;
 }
 
 #mainNav {
@@ -79,16 +79,16 @@ body {
   text-transform: uppercase;
   color: white;
   border: 0;
-  background-color: #a1e5ab;
+  background-color: #5F9EA0;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
 }
 #mainNav .navbar-brand {
-  color: #a1e5ab;
+  color: #5F9EA0;
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
 }
 #mainNav .navbar-brand.active, #mainNav .navbar-brand:active, #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
-  color: #79da87;
+  color: #4c7e80;
 }
 #mainNav .navbar-nav .nav-item .nav-link {
   font-size: 90%;
@@ -100,7 +100,7 @@ body {
   text-transform: uppercase;
 }
 #mainNav .navbar-nav .nav-item .nav-link.active, #mainNav .navbar-nav .nav-item .nav-link:hover {
-  color: #a1e5ab;
+  color: #5F9EA0;
 }
 
 @media (min-width: 992px) {
@@ -209,7 +209,7 @@ header.masthead .intro-text .intro-heading {
   -moz-transition: all ease 0.5s;
   transition: all ease 0.5s;
   opacity: 0;
-  background: rgba(161, 229, 171, 0.9);
+  background: rgba(95, 158, 160, 0.9);
 }
 #portfolio .portfolio-item .portfolio-link .portfolio-hover:hover {
   opacity: 1;
@@ -392,7 +392,7 @@ header.masthead .intro-text .intro-heading {
   color: white;
   border: 7px solid #f1f1f1;
   border-radius: 100%;
-  background-color: #a1e5ab;
+  background-color: #5F9EA0;
 }
 .timeline > li .timeline-image h4 {
   font-size: 10px;
@@ -543,7 +543,7 @@ section#contact .form-group textarea.form-control {
   height: 236px;
 }
 section#contact .form-control:focus {
-  border-color: #a1e5ab;
+  border-color: #5F9EA0;
   box-shadow: none;
 }
 section#contact ::-webkit-input-placeholder {
@@ -614,50 +614,50 @@ ul.social-buttons li a {
   background-color: #bad4cc;
 }
 ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons li a:hover {
-  background-color: #a1e5ab;
+  background-color: #5F9EA0;
 }
 
 .text-primary {
-  color: #a1e5ab !important;
+  color: #5F9EA0 !important;
 }
 
 .btn-primary {
   font-weight: 700;
   color: white;
-  border-color: #a1e5ab;
-  background-color: #a1e5ab;
+  border-color: #5F9EA0;
+  background-color: #5F9EA0;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
 }
 .btn-primary.focus, .btn-primary:focus {
   color: white;
-  border-color: #3dc952;
-  background-color: #79da87;
+  border-color: #304f50;
+  background-color: #4c7e80;
 }
 .btn-primary:hover {
   color: white;
-  border-color: #71d880;
-  background-color: #79da87;
+  border-color: #48787a;
+  background-color: #4c7e80;
 }
 .btn-primary.active, .btn-primary:active, .open > .btn-primary.dropdown-toggle {
   color: white;
-  border-color: #71d880;
-  background-color: #79da87;
+  border-color: #48787a;
+  background-color: #4c7e80;
 }
 .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open > .btn-primary.dropdown-toggle.focus, .open > .btn-primary.dropdown-toggle:focus, .open > .btn-primary.dropdown-toggle:hover {
   color: white;
-  border-color: #3dc952;
-  background-color: #5dd26e;
+  border-color: #304f50;
+  background-color: #3f686a;
 }
 .btn-primary.active, .btn-primary:active, .open > .btn-primary.dropdown-toggle {
   background-image: none;
 }
 .btn-primary.disabled.focus, .btn-primary.disabled:focus, .btn-primary.disabled:hover, .btn-primary[disabled].focus, .btn-primary[disabled]:focus, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:hover {
-  border-color: #a1e5ab;
-  background-color: #a1e5ab;
+  border-color: #5F9EA0;
+  background-color: #5F9EA0;
 }
 .btn-primary .badge {
-  color: #a1e5ab;
+  color: #5F9EA0;
   background-color: white;
 }
 
@@ -667,40 +667,40 @@ ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons l
   padding: 20px 40px;
   border-radius: 3px;
   color: white;
-  border-color: #a1e5ab;
-  background-color: #a1e5ab;
+  border-color: #5F9EA0;
+  background-color: #5F9EA0;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
 }
 .btn-xl.focus, .btn-xl:focus {
   color: white;
-  border-color: #3dc952;
-  background-color: #79da87;
+  border-color: #304f50;
+  background-color: #4c7e80;
 }
 .btn-xl:hover {
   color: white;
-  border-color: #71d880;
-  background-color: #79da87;
+  border-color: #48787a;
+  background-color: #4c7e80;
 }
 .btn-xl.active, .btn-xl:active, .open > .btn-xl.dropdown-toggle {
   color: white;
-  border-color: #71d880;
-  background-color: #79da87;
+  border-color: #48787a;
+  background-color: #4c7e80;
 }
 .btn-xl.active.focus, .btn-xl.active:focus, .btn-xl.active:hover, .btn-xl:active.focus, .btn-xl:active:focus, .btn-xl:active:hover, .open > .btn-xl.dropdown-toggle.focus, .open > .btn-xl.dropdown-toggle:focus, .open > .btn-xl.dropdown-toggle:hover {
   color: white;
-  border-color: #3dc952;
-  background-color: #5dd26e;
+  border-color: #304f50;
+  background-color: #3f686a;
 }
 .btn-xl.active, .btn-xl:active, .open > .btn-xl.dropdown-toggle {
   background-image: none;
 }
 .btn-xl.disabled.focus, .btn-xl.disabled:focus, .btn-xl.disabled:hover, .btn-xl[disabled].focus, .btn-xl[disabled]:focus, .btn-xl[disabled]:hover, fieldset[disabled] .btn-xl.focus, fieldset[disabled] .btn-xl:focus, fieldset[disabled] .btn-xl:hover {
-  border-color: #a1e5ab;
-  background-color: #a1e5ab;
+  border-color: #5F9EA0;
+  background-color: #5F9EA0;
 }
 .btn-xl .badge {
-  color: #a1e5ab;
+  color: #5F9EA0;
   background-color: white;
 }
 
