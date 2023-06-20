@@ -195,7 +195,7 @@ a {
 }
 
 a:hover {
-  color: #0056b3;
+  color: #5F9EA0;
   text-decoration: underline;
 }
 
@@ -558,7 +558,7 @@ code {
 a > code {
   padding: 0;
   color: inherit;
-  background-color: inherit;
+  background-g: inherit;
 }
 
 kbd {
