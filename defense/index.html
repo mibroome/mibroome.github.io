@@ -53,6 +53,12 @@
       color: #1e3a8a;
     }
 
+    h3 {
+      font-size: 1.4rem;
+      margin: 0;
+      color: #7A7A7A;
+    }
+
     p {
       font-size: 1.05rem;
     }
@@ -98,8 +104,16 @@
       margin-bottom: 10px;
     }
 
-    iframe {
+    .map-frame {
       width: 100%;
+      border-radius: 14px;
+      margin-top: 16px;
+    }
+    
+    .video-frame {
+      width: 100%;
+      max-width: 640px;
+      aspect-ratio: 16 / 9;
       border-radius: 14px;
       margin-top: 16px;
     }
@@ -144,14 +158,15 @@
 
   <div class="hero">
     <h1>Madelyn’s PhD Defense</h1>
-    <p class="muted">Thank you for celebrating this milestone!</p>
+    <p class="muted">Thank you for celebrating this milestone! Scroll for logistics.</p>
     
       <h2>Short introduction to my thesis topic for general audience</h2>
       <p>
         As much as I would like to make this an outreach talk purely targeted toward a general audience, the format of a dissertation defense requires that I will get into some more jargon-heavy topics and techniques.
+        
         If you want a primer aimed at a general audience, watch the 2 minute interview I gave for the ARCS foundation below.
       </p>
-      <iframe title="vimeo-player" src="https://player.vimeo.com/video/923052086?h=2d31478486" 
+      <iframe class="video-frame" title="vimeo-player" src="https://player.vimeo.com/video/923052086?h=2d31478486" 
         width="640" 
         height="360" 
         frameborder="0" 
@@ -177,7 +192,7 @@
         Interdisciplinary Sciences Building — Room 102
       </p>
 
-      <iframe
+   <iframe class="map-frame"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317.1013231271662!2d-122.0597072294762!3d36.99861514345768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e41a0068b1867%3A0xdcb8171d827f2a0a!2sInterdisciplinary%20Sciences%20Building!5e1!3m2!1sen!2sus!4v1778135492726!5m2!1sen!2sus"
         height="350"
         style="border:0;"
