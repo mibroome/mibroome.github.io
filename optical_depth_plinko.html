@@ -193,41 +193,54 @@ const SCENARIO_MAX_HITS = { 1: 1, 2: 3, 3: 3, 4: 3 };
 //  sharedLayout entries: { fracX, fracY, isLarge }
 //  (fractional coords 0-1 so they scale to any canvas size)
 // ============================================================
-let sharedLayout = [];   // populated by generateSharedLayout()
+// sharedLayout stores only geometry — { fracX, u, largeSeed }
+//   fracX:     horizontal position (fractional, 0-1)
+//   u:         raw uniform random in (0,1) for the vertical position.
+//              The actual fracY is computed on the fly from u + each board's scaleH,
+//              so changing scaleH crunches existing pins without re-randomising.
+//   largeSeed: per-pin uniform [0,1] used by each board independently to decide
+//              isLarge from that board's own largeFrac — metals are per-board, not shared.
+let sharedLayout = [];
 
-function generateSharedLayout(params) {
-  // params: density, scaleH, largeFrac
+function generateSharedLayout(density) {
   sharedLayout = [];
-  const n      = params.density;
-  const H_norm = Math.max(0.05, (params.scaleH / 100) * 4.0);
-  const marginFrac = 0.05;  // 5% horizontal margin in fractional coords
-
-  for (let i = 0; i < n; i++) {
-    const u       = Math.random();
-    const fracY   = 1.0 - expSample(u, H_norm);   // dense toward bottom
-    const fracX   = marginFrac + Math.random() * (1 - marginFrac * 2);
-    const isLarge = Math.random() < params.largeFrac;
-    sharedLayout.push({ fracX, fracY, isLarge });
+  const marginFrac = 0.05;
+  for (let i = 0; i < density; i++) {
+    sharedLayout.push({
+      fracX:     marginFrac + Math.random() * (1 - marginFrac * 2),
+      u:         0.001 + Math.random() * 0.998,
+      largeSeed: Math.random(),
+    });
   }
 }
 
-function expSample(u, H) {
-  const expNeg = Math.exp(-1 / H);
-  return Math.min(1, Math.max(0, -H * Math.log(1 - u * (1 - expNeg))));
+// Maps raw uniform u -> fracY in [0,1] for a given H_norm.
+// fracY=0 is top of canvas, fracY=1 is bottom.
+// Dense toward BOTTOM: high H_norm = nearly uniform, low H_norm = packed near bottom.
+function uToFracY(u, H_norm) {
+  const expNeg = Math.exp(-1 / H_norm);
+  const frac   = -H_norm * Math.log(1 - u * (1 - expNeg));
+  return Math.min(1, Math.max(0, 1 - frac));  // flip so density peaks at bottom
 }
 
-// Build a board's pin array from the shared layout + that board's radii
+// Build a board's pin array from sharedLayout + that board's own params.
+// scaleH and largeFrac are applied here, so boards can differ independently.
 function pinsFromLayout(board) {
   const topMargin = 40;
   const botMargin = 20;
   const usableH   = board.H - topMargin - botMargin;
   const p         = board.params;
-  return sharedLayout.map(pt => ({
-    x:     pt.fracX * board.W,
-    y:     topMargin + pt.fracY * usableH,
-    r:     pt.isLarge ? p.largePinR : p.pinR,
-    large: pt.isLarge,
-  }));
+  const H_norm    = Math.max(0.05, (p.scaleH / 100) * 4.0);
+  return sharedLayout.map(pt => {
+    const fracY   = uToFracY(pt.u, H_norm);
+    const isLarge = pt.largeSeed < p.largeFrac;
+    return {
+      x:     pt.fracX * board.W,
+      y:     topMargin + fracY * usableH,
+      r:     isLarge ? p.largePinR : p.pinR,
+      large: isLarge,
+    };
+  });
 }
 
 // ============================================================
@@ -533,39 +546,26 @@ function startAllLoops() {
 // ============================================================
 
 // Called whenever a slider moves.
-// Structural params (density, scaleH, largeFrac) → regenerate shared layout
-// and rebuild pins on ALL active boards from the new layout.
-// Cross-section params (pinR, largePinR) → just update the targeted board's
-// pin radii in-place without changing x/y positions.
+// Density changes -> regenerate shared layout (new x/y seeds) for ALL boards.
+// scaleH, largeFrac, pinR, largePinR -> per-board only; just rebuild this board's pins.
 function onSlider() {
   const params = readUIParams();
   const b      = targetBoard();
 
-  const layoutChanged =
-    b.params.density  !== params.density  ||
-    b.params.scaleH   !== params.scaleH   ||
-    b.params.largeFrac !== params.largeFrac;
-
-  const sizeChanged =
-    b.params.pinR      !== params.pinR      ||
-    b.params.largePinR !== params.largePinR;
-
+  const densityChanged = b.params.density !== params.density;
   Object.assign(b.params, params);
 
-  if (layoutChanged) {
-    // Regenerate shared layout using this board's structural params
-    generateSharedLayout(b.params);
-    // Rebuild pins on ALL active boards from the new layout (with each board's own radii)
+  if (densityChanged) {
+    generateSharedLayout(params.density);
+    // All active boards get new positions; each keeps its own scaleH / largeFrac
     activeBoards().forEach(ab => {
-      ab.params.density  = b.params.density;
-      ab.params.scaleH   = b.params.scaleH;
-      ab.params.largeFrac = b.params.largeFrac;
-      ab.pins = pinsFromLayout(ab);
+      ab.params.density = params.density;
+      ab.pins  = pinsFromLayout(ab);
       ab.lines = []; ab.avgY = null; ab.balls = [];
     });
-  } else if (sizeChanged) {
-    // Just recompute this board's pin radii without touching x/y
-    b.pins = pinsFromLayout(b);
+  } else {
+    // scaleH, largeFrac, or cross-section changed -- only this board is affected
+    b.pins  = pinsFromLayout(b);
     b.lines = []; b.avgY = null; b.balls = [];
   }
 
@@ -649,28 +649,21 @@ function applyScenario(n) {
   document.getElementById('sc'+n).classList.add('active');
 
   const sc = SCENARIOS[n];
-
-  // Structural params (density, scaleH, largeFrac) → shared across all boards
-  const structuralChanged =
-    b.params.density   !== sc.density   ||
-    b.params.scaleH    !== sc.scaleH    ||
-    b.params.largeFrac !== sc.largeFrac;
+  const densityChanged = b.params.density !== sc.density;
 
   setSliders(sc);
-  Object.assign(b.params, sc);
+  Object.assign(b.params, sc);  // applies pinR, largePinR, largeFrac, density, scaleH to THIS board only
 
-  if (structuralChanged) {
-    generateSharedLayout(b.params);
-    // Push structural params to all boards, rebuild pins with own radii
+  if (densityChanged) {
+    // New density means we regenerate shared x/u seeds for everyone
+    generateSharedLayout(sc.density);
     activeBoards().forEach(ab => {
-      ab.params.density   = sc.density;
-      ab.params.scaleH    = sc.scaleH;
-      ab.params.largeFrac = sc.largeFrac;
+      ab.params.density = sc.density;
       ab.pins  = pinsFromLayout(ab);
       ab.lines = []; ab.avgY = null; ab.balls = [];
     });
   } else {
-    // Only size changed for this board
+    // Only this board's cross-sections / scaleH / largeFrac changed
     b.pins  = pinsFromLayout(b);
     b.lines = []; b.avgY = null; b.balls = [];
   }
@@ -686,14 +679,12 @@ function resetLines() {
 }
 
 function rebuildSharedLayout() {
-  // Regenerate layout from the currently targeted board's structural params
+  // Regenerate x/u seeds from scratch using current density, then rebuild all boards
   const b = targetBoard();
   Object.assign(b.params, readUIParams());
-  generateSharedLayout(b.params);
+  generateSharedLayout(b.params.density);
   activeBoards().forEach(ab => {
-    ab.params.density   = b.params.density;
-    ab.params.scaleH    = b.params.scaleH;
-    ab.params.largeFrac = b.params.largeFrac;
+    ab.params.density = b.params.density;
     ab.pins  = pinsFromLayout(ab);
     ab.lines = []; ab.avgY = null; ab.balls = [];
   });
@@ -712,7 +703,7 @@ document.addEventListener('keydown', e => {
 // ============================================================
 updateLabels();
 // Seed a default layout before anything renders
-generateSharedLayout(getDefaultParams());
+generateSharedLayout(getDefaultParams().density);
 buildLayout();
 </script>
 </body>
